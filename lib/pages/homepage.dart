@@ -16,16 +16,17 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(),
         body: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               _buildSearchWidget(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               if (inProgress)
-                CircularProgressIndicator()
+                const CircularProgressIndicator()
               else
                 _buildWeatherWidget(),
             ],
@@ -46,43 +47,66 @@ class _HomepageState extends State<Homepage> {
 
   Widget _buildWeatherWidget() {
     if (response == null) {
-      return Text("Search for the locaion to get weather data");
+      return const Text("Search for the locaion to get weather data");
     } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Icon(
-                Icons.location_on,
-                size: 50,
+      return Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Icon(
+                    Icons.location_on,
+                    size: 50,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        response?.location?.name ?? "".split('').join('\n'),
+                        style: const TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.w300),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    response?.location?.country ?? "",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w300),
+                  )
+                ],
               ),
-              Text(
-                response?.location?.name ?? "",
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w300),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "${response?.current?.tempC.toString() ?? ""} °C",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    (response?.current?.condition?.text.toString() ?? ""),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                response?.location?.country ?? "",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-              )
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                response?.current?.tempC.toString() ?? "" + " ° C",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                response?.current?.condition?.text.toString() ?? "",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, g),
-              ),
-            ],
-          )
-        ],
+            )
+          ],
+        ),
       );
     }
   }
