@@ -16,12 +16,28 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildSearchWidget(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                radius: 20,
+                child: Icon(Icons.person),
+              ),
+            )
+          ],
+        ),
         body: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(6),
           child: Column(
             children: [
-              _buildSearchWidget(),
+              // _buildSearchWidget(),
               const SizedBox(
                 height: 20,
               ),
@@ -37,11 +53,17 @@ class _HomepageState extends State<Homepage> {
   }
 
   Widget _buildSearchWidget() {
-    return SearchBar(
-      hintText: "Serach any location",
-      onSubmitted: (value) {
-        _getWeatherData(value);
-      },
+    return Center(
+      child: Container(
+        width: 260,
+        child: SearchBar(
+          hintText: "Serach any location",
+          leading: Icon(Icons.search),
+          onSubmitted: (value) {
+            _getWeatherData(value);
+          },
+        ),
+      ),
     );
   }
 
